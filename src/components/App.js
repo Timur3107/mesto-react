@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from "./Header.js";
 import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
-import {api} from '../utils/Api.js';
+import { api } from '../utils/Api.js';
 
 function App() {
+  useEffect(()=>{
+    document.body.classList.add('root')
+  },[])
+
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-  const [selectedCard, setSelectedCard] = useState(false)
+  const [selectedCard, setSelectedCard] = useState({name: '', link: ''})
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true)
@@ -24,15 +28,15 @@ function App() {
     setIsAddPlacePopupOpen(true)
   }
 
-  const handleCardClick = (card) =>{
+  const handleCardClick = (card) => {
     setSelectedCard(card)
   }
 
-  const closeAllPopups = ()=>{
+  const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
-    setSelectedCard(false)
+    setSelectedCard({name: '', link: ''})
   }
 
   return (
@@ -59,19 +63,6 @@ function App() {
         <span className="popup__input-error avatar-input-error" />
       </PopupWithForm>
 
-      {/* попап - удалить карточку */}
-      <div className="popup popup_delete-card">
-        <div className="popup__container">
-          <button className="popup__close-button" />
-          <h2 className="popup__title">Вы уверены?</h2>
-          <form className="popup__form popup__form-delete-card" noValidate="" name="popup__form-delete-card">
-            <button className="popup__save-button" type="submit">
-              Да
-            </button>
-          </form>
-        </div>
-      </div>
-      
       {/* попап - редактировать профиль */}
       <PopupWithForm title="Редактировать профиль" name="edit-profile" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} buttonText={"Сохранить"} >
         <input
