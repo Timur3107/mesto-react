@@ -1,4 +1,4 @@
-.element__delete{
+.element__delete-button{
   position: absolute;
   right: 20px;
   top: 20px;
@@ -12,6 +12,6 @@
 }
 
 
-.element__delete:hover{
+.element__delete-button:hover{
   opacity: 0.6;
 }
