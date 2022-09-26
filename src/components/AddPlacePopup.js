@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, isClose, onAddPlace }) {
@@ -18,8 +18,13 @@ function AddPlacePopup({ isOpen, isClose, onAddPlace }) {
         onAddPlace({ name, link })
     }
 
+    useEffect(() => {
+        setName('')
+        setLink('')
+    }, [isOpen])
+
     return (
-        <PopupWithForm title="Новое место" name="add-card" isOpen={isOpen} onClose={isClose} buttonText={"Создать"} onSubmit={handleSubmit} >
+        <PopupWithForm title="Новое место" name="add-card" isOpen={isOpen} onClose={isClose} buttonText="Создать" onSubmit={handleSubmit} >
             <input
                 type="text"
                 className="popup__input popup__input-name"
@@ -30,6 +35,7 @@ function AddPlacePopup({ isOpen, isClose, onAddPlace }) {
                 maxLength={40}
                 name="name"
                 onChange={handleChangeName}
+                value={name}
             />
             <span className="popup__input-error place-input-error" />
             <input
@@ -40,6 +46,7 @@ function AddPlacePopup({ isOpen, isClose, onAddPlace }) {
                 id="link-input"
                 name="link"
                 onChange={handleChangeLink}
+                value={link}
             />
             <span className="popup__input-error link-input-error" />
         </PopupWithForm>
