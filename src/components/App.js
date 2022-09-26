@@ -8,17 +8,17 @@ import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import ImagePopup from './ImagePopup.js';
+import DeletePlacePopup from './DeletePlacePopup.js';
 
 function App() {
-  useEffect(() => {
-    document.body.classList.add('root')
-  }, [])
-
   // useState Hooks:
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
+  const [isDeletePlacePopupOpen, setIsDeletePlacePopupOpen] = useState(false)
+
   const [selectedCard, setSelectedCard] = useState({ name: '', link: '' })
+  const [selectedDeleteCard, setSelectedDeleteCard] = useState({ name: '', link: '' })
   const [cards, setCards] = useState([])
   const [currentUser, setCurrentUser] = useState({})
 
@@ -51,6 +51,7 @@ function App() {
   const handleCardDelete = (card) => {
     api.deleteCard(card._id).then(() => {
       setCards(cards.filter((currentUser) => {
+        closeAllPopups()
         return currentUser._id !== card._id
       }))
     })
@@ -108,6 +109,12 @@ function App() {
     setIsAddPlacePopupOpen(true)
   }
 
+  // попап - удалить карточку
+  const handleCardDeleteClick = (card) => {
+    setIsDeletePlacePopupOpen(true)
+    setSelectedDeleteCard(card)
+  }
+
   // попап - посмотреть карточку
   const handleCardClick = (card) => {
     setSelectedCard(card)
@@ -118,6 +125,7 @@ function App() {
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
+    setIsDeletePlacePopupOpen(false)
     setSelectedCard({ name: '', link: '' })
   }
 
@@ -132,7 +140,7 @@ function App() {
           onCardClick={handleCardClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          onCardDelete={handleCardDeleteClick}
         />
         <Footer />
 
@@ -144,6 +152,9 @@ function App() {
 
         {/* попап - добавить карточку */}
         <AddPlacePopup isOpen={isAddPlacePopupOpen} isClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
+
+        {/* попап - удалить карточку */}
+        <DeletePlacePopup isOpen={isDeletePlacePopupOpen} isClose={closeAllPopups} card={selectedDeleteCard} onDeletePlace={handleCardDelete} />
 
         {/* попап - посмотреть карточку */}
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
